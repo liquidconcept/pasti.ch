@@ -3,6 +3,7 @@
 .bundle
 public/*
 tmp/*
+log/*
 db/*
 /start.bat
 *~
