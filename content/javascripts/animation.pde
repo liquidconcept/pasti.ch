@@ -43,7 +43,6 @@ void setup()
 
 void draw()
 {
-
   // position bubbles
   for (int i = 0 ; i < bubbles.length ; i++)
   {
@@ -89,6 +88,12 @@ void draw()
     $('canvas').css('cursor', 'auto');
     noLoop();
   }
+
+  if ($('#illustration').is(':hidden'))
+  {
+    animation_start += millis();
+    $('#illustration').fadeIn(800);
+  }
 }
 
 boolean over()
@@ -116,7 +121,7 @@ void mouseClicked()
     {
       if (bubbles[i])
       {
-        bubbles[i].duration(2000, 0);
+        bubbles[i].duration(2500, 0);
       }
     }
   }
