@@ -3,8 +3,11 @@
 <head>
   <meta charset="utf-8">
   <title>pasti.ch</title>
-  <link rel="stylesheet" type="text/css" href="/stylesheets/screen.css" />
-  <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" />
+  <link rel="stylesheet" type="text/css" href="stylesheets/screen.css"/>
+  <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
+  <script type="text/javascript" src="/javascripts/jquery.js"></script>
+  <script type="text/javascript" src="/javascripts/modernizr.js"></script>
+  <script type="text/javascript" src="/javascripts/processing.js"></script>
   <script type="text/javascript">
     var _gaq = _gaq || [];
     _gaq.push(['_setAccount', 'UA-21108427-1']);
@@ -15,12 +18,31 @@
       ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
       var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
     })();
-</script>
+  </script>
 </head>
 <body>
   <div id="page">
+    <div id="header">
+      <p id="quote">No more interesting ideas and bad executions!</p>
+      <h1><a href="#">PASTI.CH</a></h1>
+      <div id="message">
+        <p>You've got the idea?</p>
+        <p>We've got the right execution!</p>
+        <p>Let's meet and talk about your project!</p>
+      </div>
+    </div>
+  
     <div id="content">
       <%= yield %>
+    </div>
+  
+    <div id="footer">
+      <div id="credits">
+        <p>
+          <span>Idea and realisatiojn by</span>
+          <a href="http://www.fabriquedimages.ch" id="fabriquedimages" onClick="window.open(this.href,'_blank');return false;">Fabrique d'images</a>
+          <a href="http://www.liquid-concept.ch" id="liquidconcept" onClick="window.open(this.href,'_blank');return false;">Liquid Concept</a>
+        </p>
     </div>
   </div>
 </body>

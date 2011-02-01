@@ -13,7 +13,7 @@ compile '/stylesheets/*/' do
   filter :sass, Compass.sass_engine_options
 end
 
-compile '/javascript/*/' do
+compile '/javascripts/*/' do
 end
 
 compile '*' do
@@ -33,8 +33,8 @@ route '/stylesheets/*/' do
   item.identifier.chop + '.css'
 end
 
-route '/javascript/*/' do
-  item.identifier.chop + '.js'
+route '/javascripts/*/' do
+  item.identifier.chop + '.' + item[:extension]
 end
 
 route '*' do

@@ -4,17 +4,176 @@
  * <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" /> */
 
 @import "compass/reset";
+@import "blueprint";
+@import "compass/utilities";
+
+#{headings(all)} {
+  font-weight: normal;
+}
+
+/*----------grid----------*/
+
+$blueprint_grid_columns: 24;
+$blueprint_grid_width: 30px;
+$blueprint_grid_margin: 10px;
+
+/*---------colors---------*/
+
+$white: #fff;
+$black: #000;
+$red: #A60000;
+
+/*---------default--------*/
 
 body {
+  margin: 0;
+  padding: 0;
+  font-family: Verdana, Geneva, sans-serif;
+	background-color: $red;
+}
+
+html {
+  overflow: auto;
+}
+
+#page {
+  position: relative;
+}
+
+/*--------header--------*/
+
+#header {
+  z-index: 100;
+  position: relative;
+  @include container;
+  margin: auto;
+  height: 40px;
+  overflow: visible;
+
+  h1 {
+    position: absolute;
+    @include replace-text-with-dimensions('logo.png');
+    top: 0;
+    right: 0;
+  }
+
+  #quote {
+    position: absolute;
+    @include replace-text-with-dimensions('quote.png');
+    top: 45px;
+    right: 320px;
+  }
+
+  #message {
+    position: absolute;
+    top: 85px;
+    right: 320px;
+
+    p {
+      text-align: right;
+      margin-bottom: 15px;
+      font-size: 13px;
+    }
+  }
+}
+
+/*---------page----------*/
+
+#content {
+  position: relative;
+  height: 700px;
   background-image: image-url('background.jpg');
 }
 
-h1 {
-  position: absolute;
-  top: 95px;
-  left: 480px;
-  margin-right: 25px;
-  color: #ffffff;
-  font-size: 28px;
-  font-style: bold;
+/*----------------------*/
+
+#illustration {
+  position: relative;
+  @include container;
+  height: 700px;
+  margin-bottom: 90px;
+
+  #team {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    /*
+    position: fixed;
+    bottom: 92px;
+    */
+  }
+
+  #animation {
+    z-index: 1000;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    /*
+    position: fixed;
+    bottom: 92px;
+    */
+    margin: 0;
+  }
+}
+
+/*---------footer---------*/
+
+#footer {
+  z-index: 100;
+  position: relative;
+  /*
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  */
+  width: 100%;
+  height: 92px;
+  background-color: $red;
+
+  #credits {
+    z-index: 110;
+    width: 100%;
+    height: 50px;
+    border-top: 1px solid $black;
+    border-bottom: 1px solid $black;
+    margin-top: 40px;
+    background-color: $white;
+
+    p {
+      display: block;
+      text-align: center;
+      margin-top: 13px;
+
+      span {
+        display: inline-block;
+        @include replace-text-with-dimensions('credits.jpg');
+        margin-right: 5px;
+      }
+
+      a {
+        display: inline-block;
+      
+        &#fabriquedimages {
+          @include replace-text-with-dimensions('fabriquedimages.jpg');
+          background-position: 0 0;
+          height: image-height('fabriquedimages.jpg') / 2;
+          margin-right: 5px;
+
+          &:hover {
+            background-position: 0 (image-height('fabriquedimages.jpg') / -2);
+          }
+        }
+
+        &#liquidconcept {
+          @include replace-text-with-dimensions('liquidconcept.jpg');
+          background-position: 0 0;
+          height: image-height('liquidconcept.jpg') / 2;
+
+          &:hover {
+            background-position: 0 (image-height('liquidconcept.jpg') / -2);
+          }
+        }
+      }
+    }
+  }
 }
