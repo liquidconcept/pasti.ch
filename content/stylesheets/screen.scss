@@ -19,21 +19,21 @@ $blueprint_grid_margin: 10px;
 
 /*---------colors---------*/
 
-$white: #fff;
-$black: #000;
+$white: #ffffff;
+$black: #000000;
 $red: #A60000;
 
 /*---------default--------*/
+
+html {
+  overflow: auto;
+}
 
 body {
   margin: 0;
   padding: 0;
   font-family: Verdana, Geneva, sans-serif;
 	background-color: $red;
-}
-
-html {
-  overflow: auto;
 }
 
 #page {
@@ -50,7 +50,8 @@ html {
   height: 40px;
   overflow: visible;
 
-  h1 {
+  h1 a {
+    display: block;
     position: absolute;
     @include replace-text-with-dimensions('logo.png');
     top: 0;
@@ -82,6 +83,8 @@ html {
 #content {
   position: relative;
   height: 700px;
+  margin: 0;
+  padding: 0;
   background-image: image-url('background.jpg');
 }
 
@@ -132,6 +135,9 @@ html {
 
   #credits {
     z-index: 110;
+    position: absolute;
+    bottom: 0;
+    left: 0;
     width: 100%;
     height: 50px;
     border-top: 1px solid $black;
