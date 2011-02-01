@@ -4,3 +4,17 @@
  * <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" /> */
 
 @import "compass/reset";
+
+body {
+  background-image: image-url('background.jpg');
+}
+
+h1 {
+  position: absolute;
+  top: 95px;
+  left: 480px;
+  margin-right: 25px;
+  color: #ffffff;
+  font-size: 28px;
+  font-style: bold;
+}
