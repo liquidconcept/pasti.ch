@@ -73,7 +73,7 @@ void draw()
   }
 
   // mouse pointer if mouse over cloud
-  if ((over_cloud() && !move_complete && !clicked) || over_lever())
+  if ((over_cloud() && (!move_complete || !extended) && !clicked) || over_lever())
   {
     $('#animation').css('cursor', 'pointer');
   }
