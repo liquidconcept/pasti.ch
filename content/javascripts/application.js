@@ -1,11 +1,11 @@
-var showcase_slide_timer;
-var showcase_slide_on = false;
-var showcase_slide;
+var showcase_slide_timeout;
 
 (function($, undefined) {
 
 var original_content_height;
 
+var showcase_slide_timer;
+var showcase_slide_on = false;
 var slide_width;
 var slide_prev = $('<a class="prev">prev</a>');
 var slide_next = $('<a class="next">next</a>');
@@ -34,18 +34,20 @@ var fix_position = function()
   }
 }
 
-var showcase_slide_timeout = function(enable, direction)
+showcase_slide_timeout = function(enable, direction, time)
 {
+  if (time === undefined && showcase_slide_on)
+  {
+    time = 10000;
+  }
+  else if (time === undefined && !showcase_slide_on)
+  {
+    time = 25000;
+  }
+
   if (enable)
   {
-    if (showcase_slide_on)
-    {
-      showcase_slide_timer = setTimeout(function() { showcase_slide(direction) }, 10000);
-    }
-    else
-    {
-      showcase_slide_timer = setTimeout(function() { showcase_slide(direction) }, 25000);
-    }
+    showcase_slide_timer = setTimeout(function() { showcase_slide(direction) }, time);
     showcase_slide_on = true;
   }
   else
@@ -55,10 +57,8 @@ var showcase_slide_timeout = function(enable, direction)
   }
 }
 
-showcase_slide = function(direction)
+var showcase_slide = function(direction)
 {
-  showcase_slide_timeout(false);
-
   if (direction === 'prev')
   {
     if ($('#slideshow .wrapper').position().left === 0)
@@ -81,10 +81,6 @@ showcase_slide = function(direction)
     showcase_slide_timeout(true, 'next');
     $('#slideshow .wrapper').animate({left: '-=' + slide_width}, 1200);
     sublimevideo.stop();
-  }
-  else
-  {
-    return;
   }
 }
 
@@ -121,8 +117,8 @@ $(document).ready(function() {
     sublimevideo.prepare($('video'));
   });
 
-  $('#showcase .next').bind('click', function() { showcase_slide('next'); });
-  $('#showcase .prev').bind('click', function() { showcase_slide('prev'); });
+  $('#showcase .next').bind('click', function() { showcase_slide_timeout(false); showcase_slide('next'); });
+  $('#showcase .prev').bind('click', function() { showcase_slide_timeout(false); showcase_slide('prev'); });
 });
 
 })(jQuery);

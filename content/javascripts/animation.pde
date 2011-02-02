@@ -168,7 +168,7 @@ void draw()
   }
   else if (extended && move_complete && color_complete && $('#showcase').is(':hidden'))
   {
-    $('#showcase').fadeIn(1200, function() { showcase_slide_timer = setTimeout(function() { showcase_slide('next') }, 10000) });
+    $('#showcase').fadeIn(1200, function() { showcase_slide_timeout(true, 'next', 10000) });
   }
 
   // show animation & reset start timer after first pass
@@ -271,8 +271,7 @@ void mouseClicked()
         bubbles[i].duration(1500, 50);
       }
     }
-    clearTimeout(showcase_slide_timer);
-    showcase_slide_on = false;
+    showcase_slide_timeout(false)
     $('#showcase').fadeOut(600, function() { move_complete = false });
     sublimevideo.stop();
 
