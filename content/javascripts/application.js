@@ -1,4 +1,5 @@
 var showcase_slide_timer;
+var showcase_slide_on = false;
 var showcase_slide;
 
 (function($, undefined) {
@@ -33,34 +34,51 @@ var fix_position = function()
   }
 }
 
+var showcase_slide_timeout = function(enable, direction)
+{
+  if (enable)
+  {
+    if (showcase_slide_on)
+    {
+      showcase_slide_timer = setTimeout(function() { showcase_slide(direction) }, 10000);
+    }
+    else
+    {
+      showcase_slide_timer = setTimeout(function() { showcase_slide(direction) }, 25000);
+    }
+    showcase_slide_on = true;
+  }
+  else
+  {
+    clearTimeout(showcase_slide_timer);
+    showcase_slide_on = false;
+  }
+}
+
 showcase_slide = function(direction)
 {
-  clearTimeout(showcase_slide_timer);
+  showcase_slide_timeout(false);
 
   if (direction === 'prev')
   {
-    clearTimeout(showcase_slide_timer);
-
     if ($('#slideshow .wrapper').position().left === 0)
     {
       $('#slideshow .wrapper').prepend($('#slideshow .wrapper .slide:last-child').detach()).css('left', -slide_width);
     }
-    showcase_slide_timer = setTimeout(function() { showcase_slide('prev') }, 10000);
 
+    showcase_slide_timeout(true, 'prev');
     $('#slideshow .wrapper').animate({left: '+=' + slide_width}, 1200);
     sublimevideo.stop();
   }
   else if (direction === 'next')
   {
-    clearTimeout(showcase_slide_timer);
-
     if ($('#slideshow .wrapper').position().left === -($('#slideshow .wrapper').width() - slide_width))
     {
       var wrapper_position = $('#slideshow .wrapper').position().left + slide_width;
       $('#slideshow .wrapper').append($('#slideshow .wrapper .slide:first-child').detach()).css('left', wrapper_position);
     }
-    showcase_slide_timer = setTimeout(function() { showcase_slide('next') }, 10000);
 
+    showcase_slide_timeout(true, 'next');
     $('#slideshow .wrapper').animate({left: '-=' + slide_width}, 1200);
     sublimevideo.stop();
   }
@@ -91,16 +109,13 @@ $(document).ready(function() {
   $('#slideshow .slide').wrapAll('<div class="wrapper"></div>');
   $('#slideshow .wrapper').css('width', $('#slideshow .slide').length * slide_width);
 
-  console.log(sublimevideo);
-  console.log(sublimevideo.onStart);
-
   sublimevideo.ready(function() {
     sublimevideo.onStart(function() {
-      clearTimeout(showcase_slide_timer);
+      showcase_slide_timeout(false);
     });
 
     sublimevideo.onEnd(function() {
-      showcase_slide_timer = setTimeout(function() { showcase_slide('next') }, 20000);
+      showcase_slide_timeout(true, 'next');
     });
   });
 
