@@ -1,8 +1,8 @@
 javascript_compressor: closure
 javascripts:
   common:
-    - public/javascripts/vendor/*.js
-    - public/javascripts/lib/*.js
+    - public/javascripts/vendor/modernizr.js
+    - public/javascripts/vendor/jquery.js
     - public/javascripts/application.js
 
 stylesheets:
