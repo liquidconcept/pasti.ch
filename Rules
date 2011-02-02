@@ -9,6 +9,9 @@ Compass.add_project_configuration 'config/compass.rb'
 compile '/images/*/' do
 end
 
+compile '/videos/*/' do
+end
+
 compile '/stylesheets/*/' do
   filter :sass, Compass.sass_engine_options
 end
@@ -23,6 +26,10 @@ end
 
 # Route
 route '/images/*/' do
+  item.identifier.chop + '.' + item[:extension]
+end
+
+route '/videos/*/' do
   item.identifier.chop + '.' + item[:extension]
 end
 

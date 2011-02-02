@@ -22,6 +22,7 @@ $blueprint_grid_margin: 10px;
 $white: #ffffff;
 $black: #000000;
 $red: #A60000;
+$dark_grey: rgb(80, 80, 80);
 
 /*---------default--------*/
 
@@ -32,8 +33,10 @@ html {
 body {
   margin: 0;
   padding: 0;
-  font-family: Verdana, Geneva, sans-serif;
 	background-color: $red;
+  font-family: Verdana, Geneva, sans-serif;
+  line-height: 15px;
+  font-size: 13px;
 }
 
 #page {
@@ -50,17 +53,21 @@ body {
   height: 40px;
   overflow: visible;
 
-  h1 a {
-    display: block;
-    position: absolute;
-    @include replace-text-with-dimensions('logo.png');
-    top: 0;
-    right: 0;
+  h1 {
+    a {
+      display: block;
+      position: absolute;
+      @include replace-text-with-dimensions('logo.png');
+      top: 0;
+      right: 0;
+    }
   }
 
   #quote {
     position: absolute;
     @include replace-text-with-dimensions('quote.png');
+    background-position: 0 0;
+    height: image-height('quote.png') / 2;
     top: 45px;
     right: 320px;
   }
@@ -73,7 +80,6 @@ body {
     p {
       text-align: right;
       margin-bottom: 15px;
-      font-size: 13px;
     }
   }
 }
@@ -89,10 +95,85 @@ body {
 }
 
 /*----------------------*/
-
-#illustration {
+#home {
   position: relative;
   @include container;
+}
+
+#showcase {
+  display: none;
+  z-index: 1100;
+  position: absolute;
+  bottom: 435px;
+  left: 95px;
+
+  a {
+    @include unstyled-link;
+    cursor: pointer;
+
+    &:hover {
+      color: darken($dark_grey, 20%);
+    }
+  }
+
+  #contact {
+    @include float(left);
+    overflow: hidden;
+    width: 245px;
+    height: 200px;
+    margin: 0 35px 0 0;
+
+    h2 {
+      margin: 0 0 12px 0;
+      color: $dark_grey;
+      line-height: 18px;
+      font-size: 17px;
+    }
+
+    p {
+      margin: 0 0 12px 0;
+      color: $dark_grey;
+
+      &:not(.mail) {
+        text-align: justify;
+      }
+    }
+  }
+
+  #slideshow {
+    @include float(left);
+    overflow: hidden;
+    width: 450px;
+    height: 290px;
+    margin: 0 0 0 20px;
+
+    .slide {
+      display: block;
+      @include float(left);
+      height: inherit;
+      width: inherit;
+      margin: 0 auto;
+
+      .slide-content {
+        clear: both;
+        display: block;
+        width: 380px;
+        margin: 0 auto;
+
+        p {
+          margin: 10px 0 0 0;
+          padding: 0;
+          text-align: justify;
+          color: $dark_grey;
+        }
+      }
+    }
+  }
+}
+
+#illustration {
+  z-index: 1000;
+  position: relative;
   height: 700px;
   margin-bottom: 90px;
 
@@ -109,7 +190,6 @@ body {
   }
 
   #animation {
-    z-index: 1000;
     position: absolute;
     right: 0;
     bottom: 0;
@@ -132,16 +212,17 @@ body {
   left: 0;
   */
   width: 100%;
-  height: 92px;
+  height: 105px;
   background-color: $red;
 
   #credits {
     z-index: 110;
     position: absolute;
+    overflow: hidden;
     bottom: 0;
     left: 0;
     width: 100%;
-    height: 50px;
+    height: 63px;
     border-top: 1px solid $black;
     border-bottom: 1px solid $black;
     margin-top: 40px;
@@ -149,8 +230,10 @@ body {
 
     p {
       display: block;
+      height: 35px;
+      margin: 13px 0 0 0;
+      padding: 0;
       text-align: center;
-      margin-top: 13px;
 
       span {
         display: inline-block;
@@ -182,6 +265,22 @@ body {
           }
         }
       }
+    }
+
+    #github {
+      display: block;
+      height: 10px;
+      margin: 4px 0 1px 0;
+      padding: 0;
+      text-align: center;
+      line-height: 10px;
+      font-size: 9px;
+
+      a {
+        @include unstyled-link;
+        cursor: pointer;
+      }
+
     }
   }
 }
