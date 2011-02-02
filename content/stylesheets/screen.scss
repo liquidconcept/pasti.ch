@@ -275,6 +275,7 @@ body {
       text-align: center;
       line-height: 10px;
       font-size: 9px;
+      color: $dark_grey;
 
       a {
         @include unstyled-link;
