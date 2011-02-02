@@ -22,8 +22,9 @@ boolean lever_status = false;
 
 boolean clicked = false;
 
-boolean move_complete  = false;
-boolean color_complete = false;
+boolean move_complete    = false;
+boolean color_complete   = false;
+boolean extended         = true;
 
 void setup()
 {
@@ -72,7 +73,7 @@ void draw()
   }
 
   // mouse pointer if mouse over cloud
-  if ((over_cloud() && !move_complete && !clicked) || (over_lever() && !lever_status))
+  if ((over_cloud() && !move_complete && !clicked) || over_lever())
   {
     $('#animation').css('cursor', 'pointer');
   }
@@ -93,15 +94,15 @@ void draw()
   // draw cloud
   if (!move_complete && over_cloud() && !clicked)
   {
-    float start_red = red(start_color);
-    float start_green = green(start_color);
-    float start_blue = blue(start_color);
+    float current_red = red(current_color);
+    float current_green = green(current_color);
+    float current_blue = blue(current_color);
 
-    fill(color(start_red + 9, start_green + 9, start_blue + 9));
+    fill(color(current_red + 9, current_green + 9, current_blue + 9));
   }
-  else if (!move_complete)
+  else if (!move_complete && !color_complete)
   {
-    fill(start_color);
+    fill(current_color);
   }
   else if (!color_complete)
   {
@@ -134,7 +135,7 @@ void draw()
   }
   else
   {
-    fill(end_color);
+    fill(current_color);
   }
   noStroke();
   
@@ -159,16 +160,15 @@ void draw()
   if (complete && !move_complete)
   {
     move_complete = true;
-    change_lever_status(true);
   }
   else if (complete && !color_complete)
   {
     color_complete = true;
-    $('#showcase').fadeIn(1200);
+    change_lever_status(true);
   }
-  else if (move_complete && color_complete)
+  else if (extended && move_complete && color_complete)
   {
-    noLoop();
+    $('#showcase').fadeIn(1200);
   }
 
   // show animation & reset start timer after first pass
@@ -238,18 +238,46 @@ void mouseClicked()
 {
   if (over_cloud() || (over_lever() && !lever_status))
   {
-    clicked = true;
+    move_complete  = true;
 
     for (int i = 0 ; i < bubbles.length ; i++)
     {
       if (bubbles[i])
       {
+        if (!extended)
+        {
+          bubbles[i].direction(bubbles[i].x, bubbles[i].y, bubbles[i].xend, bubbles[i].yend);
+        }
         bubbles[i].duration(2500, 50);
       }
     }
+    move_complete   = false;
+    color_complete  = false;
+    clicked         = true;
+    extended        = true;
     animation_start = 0;
 
     change_lever_status(true);
+  }
+  else if (over_lever() && lever_status)
+  {
+    move_complete = true;
+
+    for (int i = 0 ; i < bubbles.length ; i++)
+    {
+      if (bubbles[i])
+      {
+        bubbles[i].direction(bubbles[i].x, bubbles[i].y, bubbles[i].xstart, bubbles[i].ystart);
+        bubbles[i].duration(1500, 50);
+      }
+    }
+    $('#showcase').fadeOut(600, function() { move_complete = false });
+
+    color_complete = true;
+    clicked        = false;
+    extended       = false;
+
+    change_lever_status(false);
   }
 }
 
@@ -259,10 +287,12 @@ class Bubble
 
   int width = 100;    //
   int height = 100;   //
-  int x;              // current x position
-  int y;              // current y position
+  int xstart;         // x position on animation start
+  int ystart;         // y position on animation start
   int xend;           // x position on animation end
   int yend;           // y position on animation end
+  int x;              // current x position
+  int y;              // current y position
   int xdir;           // x direction from start to end (positive for left to right)
   int ydir;           // y direction from start to end (positive for top to bottom)
 
@@ -286,19 +316,26 @@ class Bubble
   {
     bubble = b;
     bubble.disableStyle(); // remove default SVG styles
-    
-    x = xs;
-    y = ys;
+
+    xstart = xs;
+    ystart = ys;
     xend = xe;
     yend = ye;
 
-    dx = abs(xend - x); // distance betweean start and end point in x axe
-    dy = abs(yend - y); // distance betweean start and end point in y axe
+    direction(xs, ys, xe, ye);
+
+    duration(ad);
+  }
+
+  void direction(int xs, int ys, int xe, int ye, int xc, int yc)
+  {
+    dx = abs(xe - xs); // distance betweean start and end point in x axe
+    dy = abs(ye - ys); // distance betweean start and end point in y axe
 
     incr = dx - dy;
 
     // define direction of movement, used to increment (or decrement) bubble position.
-    if (x < xend)
+    if (xs < xe)
     {
       xdir = 1;
     }
@@ -307,7 +344,7 @@ class Bubble
       xdir = -1;
     }
 
-    if (y < yend)
+    if (ys < ye)
     {
       ydir = 1;
     }
@@ -326,8 +363,10 @@ class Bubble
       steps = dy;
     }
 
-    // define duration
-    duration(ad);
+    x = xs;
+    y = ys;
+    animation_duration = 0;
+    complete = false;
   }
 
   void duration(int ad, int diff)
