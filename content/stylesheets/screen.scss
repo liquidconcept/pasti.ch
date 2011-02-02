@@ -313,6 +313,7 @@ body {
       text-align: center;
 
       span {
+        display: inline-block;
         @include replace-text-with-dimensions('credits.jpg');
         margin-right: 5px;
       }

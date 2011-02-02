@@ -117,6 +117,8 @@ $(document).ready(function() {
     sublimevideo.onEnd(function() {
       showcase_slide_timeout(true, 'next');
     });
+
+    sublimevideo.prepare($('video'));
   });
 
   $('#showcase .next').bind('click', function() { showcase_slide('next'); });

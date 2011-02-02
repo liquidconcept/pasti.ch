@@ -274,6 +274,7 @@ void mouseClicked()
     clearTimeout(showcase_slide_timer);
     showcase_slide_on = false;
     $('#showcase').fadeOut(600, function() { move_complete = false });
+    sublimevideo.stop();
 
     color_complete = true;
     clicked        = false;

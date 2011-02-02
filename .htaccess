@@ -1,3 +1,7 @@
+AddType video/ogg .ogv
+AddType video/mp4 .mp4
+AddType video/webm .webm
+
 RewriteEngine on
 RewriteCond %{HTTP_HOST} !^pasti.ch
 RewriteRule ^(.*)$ http://pasti.ch/$1 [R=301,L]
