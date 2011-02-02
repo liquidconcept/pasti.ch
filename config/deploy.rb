@@ -35,6 +35,17 @@ before 'deploy:symlink' do
   # run "mkdir -p #{File.join(shared_path,'sqlite')} && rm -f #{File.join(release_path,'db','.gitkeep')} && rmdir #{File.join(release_path,'db')} && ln -s #{File.join(shared_path,'sqlite')} #{File.join(release_path,'db')}"
   run "cd #{release_path} && RACK_ENV=\"production\" bundle exec nanoc3 compile > /dev/null"
 end
+before 'deploy:symlink', 'jammit:invoke'
 
 after 'deploy:update', 'deploy:restart'
 after 'deploy:update', 'deploy:cleanup'
+
+namespace :jammit do
+  desc "Run jammit on server"
+  task :invoke do
+    bundle = fetch(:bundle, "bundle")
+    jammit = fetch(:jammit, "jammit")
+    rails_env = fetch(:rails_env, "production")
+    run("cd #{latest_release}; RACK_ENV=#{rails_env} #{bundle} exec #{jammit}")
+  end
+end
