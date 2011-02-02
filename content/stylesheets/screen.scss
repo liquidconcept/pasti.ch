@@ -116,6 +116,34 @@ body {
     }
   }
 
+  a.prev {
+    display: block;
+    position: absolute;
+    top: 100px;
+    left: 315px;
+    @include replace-text-with-dimensions('slide-prev.png');
+    background-position: 0 0;
+    height: image-height('slide-prev.png') / 2;
+
+    &:hover {
+      background-position: 0 (image-height('slide-prev.png') / -2);
+    }
+  }
+
+  a.next {
+    display: block;
+    position: absolute;
+    top: 100px;
+    left: 727px;
+    @include replace-text-with-dimensions('slide-next.png');
+    background-position: 0 0;
+    height: image-height('slide-next.png') / 2;
+
+    &:hover {
+      background-position: 0 (image-height('slide-next.png') / -2);
+    }
+  }
+
   #contact {
     @include float(left);
     overflow: hidden;
@@ -141,13 +169,22 @@ body {
   }
 
   #slideshow {
+    position: relative;
     @include float(left);
     overflow: hidden;
-    width: 450px;
+    width: 400px;
     height: 290px;
-    margin: 0 0 0 20px;
+    margin: 0 0 0 45px;
+
+    .wrapper {
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
 
     .slide {
+      position: relative;
       display: block;
       @include float(left);
       height: inherit;

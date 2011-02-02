@@ -166,9 +166,9 @@ void draw()
     color_complete = true;
     change_lever_status(true);
   }
-  else if (extended && move_complete && color_complete)
+  else if (extended && move_complete && color_complete && $('#showcase').is(':hidden'))
   {
-    $('#showcase').fadeIn(1200);
+    $('#showcase').fadeIn(1200, function() { showcase_slide_timer = setTimeout(function() { showcase_slide('next') }, 10000) });
   }
 
   // show animation & reset start timer after first pass
@@ -271,6 +271,7 @@ void mouseClicked()
         bubbles[i].duration(1500, 50);
       }
     }
+    clearTimeout(showcase_slide_timer);
     $('#showcase').fadeOut(600, function() { move_complete = false });
 
     color_complete = true;
