@@ -1,19 +1,24 @@
 /* @pjs transparent=true; */
 
-int canvas_width = 950;
+int canvas_width  = 950;
 int canvas_height = 700;
 
-int bubbles_right_pos = 153;
+int bubbles_right_pos  = 157;
 int bubbles_bottom_pos = 175;
 
 PShape factory;
 PShape bubbles_base;
 Bubble[] bubbles = new Bubble[5 * 13];
 
-int start_color = color(140, 139, 132);
+int start_color   = color(140, 139, 132);
+int current_color = color(140, 139, 132);
+int end_color     = color(216, 211, 199);
 
 int animation_duration = 60000;
-int animation_start = 2000;
+int animation_start    = 2000;
+
+boolean move_complete  = false;
+boolean color_complete = false;
 
 void setup()
 {
@@ -31,7 +36,8 @@ void setup()
   {
     for (int i = 0 ; i < 13 ; i++)
     {
-      if ( j < 4 || (j < 5 && i > 4) || (i > 9 && i < 11))
+      //if ( j < 4 || (j < 5 && i > 4) || (i > 9 && i < 11))
+      if ( j < 3 || (j < 4 && i > 2) || (j < 5 && i > 4) || (i > 9 && i < 11))
       {
         bubbles[i + j * 13] = new Bubble(int(random(510, 680)), int(random(260, 300)), 60 * (i + 1), 60 * (j + 1) - 25, loadShape("/images/animation/bubble-" + str(int(random(1, 4))) + ".svg"), animation_duration); // 189x168
       }
@@ -43,52 +49,109 @@ void setup()
 
 void draw()
 {
+  boolean complete = false;
+
   // position bubbles
-  for (int i = 0 ; i < bubbles.length ; i++)
+  if (!move_complete)
   {
-    if (bubbles[i] && millis() > animation_start)
+    for (int i = 0 ; i < bubbles.length ; i++)
     {
-      bubbles[i].move();
+      if (bubbles[i] && millis() > animation_start)
+      {
+        bubbles[i].move();
+      }
     }
   }
-  
-  // styles
-  background(0, 0, 0, 0);
-  noStroke();
-  if (over() && !complete)
+
+  // mouse pointer if mouse over cloud
+  if (over() && !move_complete)
   {
-    $('canvas').css('cursor', 'pointer');
+    $('#animation').css('cursor', 'pointer');
   }
   else
   {
-    fill(start_color);
-    $('canvas').css('cursor', 'auto');
+    $('#animation').css('cursor', 'auto');
   }
+  
+  // background
+  background(0, 0, 0, 0);
 
   // draw factory
+  fill(start_color);
+  noStroke();
   shape(factory, canvas_width - factory.width, canvas_height - factory.height);
-  
+
   // draw cloud
+  if (!move_complete)
+  {
+    fill(start_color);
+  }
+  else if (!color_complete)
+  {
+    complete = true;
+
+    float current_red = red(current_color);
+    float current_green = green(current_color);
+    float current_blue = blue(current_color);
+
+    if (current_red < red(end_color))
+    {
+      complete = false;
+      current_red += 3;
+    }
+
+    if (current_green < green(end_color))
+    {
+      complete = false;
+      current_green += 3;
+    }
+
+    if (current_blue < blue(end_color))
+    {
+      complete = false;
+      current_blue += 3;
+    }
+
+    current_color = color(current_red, current_green, current_blue);
+    fill(current_color);
+  }
+  else
+  {
+    fill(end_color);
+  }
+  noStroke();
+  
   shape(bubbles_base, canvas_width - bubbles_right_pos - bubbles_base.width, canvas_height - bubbles_bottom_pos - bubbles_base.height);
-  boolean complete = true;
+  if (!move_complete)
+  {
+    complete = true;
+  }
   for (int i = 0 ; i < bubbles.length ; i++)
   {
     if (bubbles[i])
     {
       bubbles[i].display();
-      if (complete)
+      if (complete && !move_complete)
       {
         complete = bubbles[i].complete;
       }
     }
   }
-  
-  if (complete)
+
+  // end
+  if (complete && !move_complete)
   {
+    move_complete = true;
     $('canvas').css('cursor', 'auto');
+  }
+  else if (complete && !color_complete)
+  {
+    color_complete = true;
+    $('#showcase').fadeIn(1200);
     noLoop();
   }
 
+  // show animation & reset start timer after first pass
   if ($('#illustration').is(':hidden'))
   {
     animation_start += millis();
@@ -121,9 +184,10 @@ void mouseClicked()
     {
       if (bubbles[i])
       {
-        bubbles[i].duration(2500, 0);
+        bubbles[i].duration(2500, 50);
       }
     }
+    animation_start = 0;
   }
 }
 
