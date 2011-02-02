@@ -7,6 +7,7 @@ int bubbles_right_pos  = 157;
 int bubbles_bottom_pos = 175;
 
 PShape factory;
+PShape lever;
 PShape bubbles_base;
 Bubble[] bubbles = new Bubble[5 * 13];
 
@@ -16,6 +17,10 @@ int end_color     = color(216, 211, 199);
 
 int animation_duration = 60000;
 int animation_start    = 2000;
+
+boolean lever_status = false;
+
+boolean clicked = false;
 
 boolean move_complete  = false;
 boolean color_complete = false;
@@ -28,6 +33,9 @@ void setup()
 
   // load images
   factory = loadShape("/images/animation/factory.svg");
+
+  lever = loadShape("/images/animation/lever.svg");
+  lever.rotate(-0.3)
   
   bubbles_base = loadShape("/images/animation/bubbles-base.svg"); // 392x297
   bubbles_base.disableStyle();
@@ -64,7 +72,7 @@ void draw()
   }
 
   // mouse pointer if mouse over cloud
-  if (over() && !move_complete)
+  if ((over_cloud() && !move_complete && !clicked) || (over_lever() && !lever_status))
   {
     $('#animation').css('cursor', 'pointer');
   }
@@ -80,9 +88,18 @@ void draw()
   fill(start_color);
   noStroke();
   shape(factory, canvas_width - factory.width, canvas_height - factory.height);
+  display_lever();
 
   // draw cloud
-  if (!move_complete)
+  if (!move_complete && over_cloud() && !clicked)
+  {
+    float start_red = red(start_color);
+    float start_green = green(start_color);
+    float start_blue = blue(start_color);
+
+    fill(color(start_red + 9, start_green + 9, start_blue + 9));
+  }
+  else if (!move_complete)
   {
     fill(start_color);
   }
@@ -142,12 +159,15 @@ void draw()
   if (complete && !move_complete)
   {
     move_complete = true;
-    $('canvas').css('cursor', 'auto');
+    change_lever_status(true);
   }
   else if (complete && !color_complete)
   {
     color_complete = true;
     $('#showcase').fadeIn(1200);
+  }
+  else if (move_complete && color_complete)
+  {
     noLoop();
   }
 
@@ -159,7 +179,36 @@ void draw()
   }
 }
 
-boolean over()
+void display_lever()
+{
+  if (lever_status)
+  {
+    shape(lever, canvas_width - 84, canvas_height - 66.5);
+  }
+  else
+  {
+    shape(lever, canvas_width - 86, canvas_height - 43.5);
+  }
+}
+
+vois change_lever_status(boolean status)
+{
+  if (lever_status != status)
+  {
+    lever_status = status;
+
+    if (lever_status)
+    {
+      lever.rotate(0.6);
+    }
+    else
+    {
+      lever.rotate(-0.6);
+    }
+  }
+}
+
+boolean over_cloud()
 {
   if (mouseX >= canvas_width - bubbles_right_pos - bubbles_base.width && mouseX <= canvas_width - bubbles_right_pos &&
       mouseY >= canvas_height - bubbles_bottom_pos - bubbles_base.height && mouseY <= canvas_height - bubbles_bottom_pos)
@@ -176,10 +225,21 @@ boolean over()
   return false;
 }
 
+boolean over_lever()
+{
+  if (mouseX >= canvas_width - 100 && mouseX <= canvas_width - 30 && mouseY >= canvas_height - 70 && mouseY <= canvas_height - 35)
+  {
+    return true;
+  }
+  return false;
+}
+
 void mouseClicked()
 {
-  if (over())
+  if (over_cloud() || (over_lever() && !lever_status))
   {
+    clicked = true;
+
     for (int i = 0 ; i < bubbles.length ; i++)
     {
       if (bubbles[i])
@@ -188,6 +248,8 @@ void mouseClicked()
       }
     }
     animation_start = 0;
+
+    change_lever_status(true);
   }
 }
 
