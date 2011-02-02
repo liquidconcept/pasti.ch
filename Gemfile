@@ -8,7 +8,10 @@ gem 'nanoc'
 # gem 'pony'
 # gem 'sqlite3-ruby'
 
+gem 'activesupport'
+
 gem 'compass'
+gem 'jammit'
 
 gem 'capistrano',       :group => [:development]
 gem 'railsless-deploy', :group => [:development]
