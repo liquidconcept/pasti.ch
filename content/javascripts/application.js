@@ -11,7 +11,15 @@ var slide_next = $('<a class="next">next</a>');
 
 var fix_position = function()
 {
-  var content_height  = $(window).height() - $('#header').outerHeight() - $('#footer').outerHeight();
+  var content_height;
+  if ($('#header').is(':hidden'))
+  {
+    content_height = $(window).height() - $('#footer').outerHeight();
+  }
+  else
+  {
+    content_height = $(window).height() - $('#header').outerHeight() - $('#footer').outerHeight();
+  }
 
   if (content_height >= original_content_height)
   {

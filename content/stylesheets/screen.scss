@@ -45,7 +45,7 @@ body {
 
 /*--------header--------*/
 
-#header {
+.canvas #header {
   z-index: 100;
   position: relative;
   @include container;
@@ -84,9 +84,13 @@ body {
   }
 }
 
+.no-canvas #header {
+  display: none;
+}
+
 /*---------page----------*/
 
-#content {
+.canvas #content {
   position: relative;
   height: 700px;
   margin: 0;
@@ -94,10 +98,22 @@ body {
   background-image: image-url('background.jpg');
 }
 
+.no-canvas #content {
+  position: relative;
+  height: 400px;
+  margin: 0;
+  padding: 0;
+  background-image: image-url('background-no-canvas.jpg');
+}
+
 /*----------------------*/
 #home {
   position: relative;
   @include container;
+}
+
+.no-canvas #home {
+  display: none;
 }
 
 #showcase {
@@ -238,6 +254,30 @@ body {
   }
 }
 
+.no-canvas #content div.ie-message {
+  display: block;
+
+  p {
+    z-index: 10000;
+    position: absolute;
+    top: 75px;
+    left: 480px;
+    width: 600px;
+    margin-right: 25px;
+    color: $white;
+    line-height: 27px;
+    font-size: 24px;
+
+    a, a:hover, a:visited {
+      color: white;
+    }
+  }
+}
+
+.canvas #content div.ie-message {
+  display: none;
+}
+
 /*---------footer---------*/
 
 #footer {
@@ -273,7 +313,6 @@ body {
       text-align: center;
 
       span {
-        display: inline-block;
         @include replace-text-with-dimensions('credits.jpg');
         margin-right: 5px;
       }
@@ -321,4 +360,8 @@ body {
 
     }
   }
+}
+
+.no-canvas #footer {
+  background-color: #8d8a85;
 }
