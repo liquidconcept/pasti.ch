@@ -59,6 +59,12 @@ showcase_slide_timeout = function(enable, direction, time)
 
 var showcase_slide = function(direction)
 {
+  if($('#slideshow .wrapper').queue().length > 0)
+  {
+    setTimeout(showcase_slider, 100, direction);
+    return;
+  }
+
   if (direction === 'prev')
   {
     if ($('#slideshow .wrapper').position().left === 0)
