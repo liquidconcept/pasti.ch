@@ -7,6 +7,8 @@ set :scm,         :git
 set :repository,  'git@github.com:liquidconcept/pasti.ch.git'
 set :branch,      'master'
 
+set :keep_releases, 3
+
 ssh_options[:forward_agent] = true
 
 default_run_options[:pty] = true
