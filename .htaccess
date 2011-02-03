@@ -4,4 +4,4 @@ AddType video/webm .webm
 
 RewriteEngine on
 RewriteCond %{HTTP_HOST} !^pasti.ch
-RewriteRule ^(.*)$ http://pasti.ch/$1 [R=301,L]
+RewriteRule ^(public/)?(index\.html)?(.*)$ http://pasti.ch/$3 [R=301,L]
