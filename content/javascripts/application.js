@@ -49,11 +49,6 @@ showcase_slide_timeout = function(enable, direction, time)
     time = 25000;
   }
 
-  console.log(enable);
-  console.log(direction);
-  console.log(time);
-  console.log('---');
-
   if (enable)
   {
     showcase_slide_timer = setTimeout(function() { showcase_slide(direction) }, time);
