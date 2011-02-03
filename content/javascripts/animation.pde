@@ -271,8 +271,18 @@ void mouseClicked()
         bubbles[i].duration(1500, 50);
       }
     }
-    showcase_slide_timeout(false)
-    $('#showcase').fadeOut(600, function() { move_complete = false });
+    var fade_out = function()
+    {
+      if($('#slideshow .wrapper').queue().length > 0)
+      {
+        setTimeout(fade_out, 100);
+        return;
+      }
+      showcase_slide_timeout(false);
+      $('#showcase').fadeOut(600, function() { move_complete = false });
+    }
+    fade_out();
+    
     sublimevideo.stop();
 
     color_complete = true;

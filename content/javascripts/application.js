@@ -9,6 +9,7 @@ var showcase_slide_on = false;
 var slide_width;
 var slide_prev = $('<a class="prev">prev</a>');
 var slide_next = $('<a class="next">next</a>');
+var wait_on_slide_timer;
 
 var fix_position = function()
 {
@@ -36,6 +37,9 @@ var fix_position = function()
 
 showcase_slide_timeout = function(enable, direction, time)
 {
+  clearTimeout(showcase_slide_timer);
+  clearTimeout(wait_on_slide_timer);
+
   if (time === undefined && showcase_slide_on)
   {
     time = 10000;
@@ -45,6 +49,11 @@ showcase_slide_timeout = function(enable, direction, time)
     time = 25000;
   }
 
+  console.log(enable);
+  console.log(direction);
+  console.log(time);
+  console.log('---');
+
   if (enable)
   {
     showcase_slide_timer = setTimeout(function() { showcase_slide(direction) }, time);
@@ -52,7 +61,6 @@ showcase_slide_timeout = function(enable, direction, time)
   }
   else
   {
-    clearTimeout(showcase_slide_timer);
     showcase_slide_on = false;
   }
 }
@@ -61,7 +69,7 @@ var showcase_slide = function(direction)
 {
   if($('#slideshow .wrapper').queue().length > 0)
   {
-    setTimeout(showcase_slider, 100, direction);
+    wait_on_slide_timer = setTimeout(showcase_slide, 100, direction);
     return;
   }
 
